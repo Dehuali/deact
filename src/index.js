@@ -5,7 +5,9 @@ import './index.css';
 function Square(props) {
     return (
       <button className="square" onClick={props.onClick}>
+        {/* {props.value ? props.value : props.position} */}
         {props.value}
+        {/* {props.position} */}
       </button>
     );
   }
@@ -21,22 +23,29 @@ class Board extends React.Component {
 
   handleClick(i){
     let squaries = this.state.squaries.slice()
-    if(!squaries[i]){
+    if(!squaries[i] && !this.state.winner){
       squaries[i] = this.state.isNext ? 'X':'O'
       this.setState({squaries: squaries, isNext: !this.state.isNext})
+    }
+    let winner = calculateWinner(squaries)
+    if(winner){
+      this.setState({winner: winner})
     }
   }
 
   renderSquare(i ) {
-    return (<Square 
+    return (<Square
+              position = {i} 
               value = {this.state.squaries[i]}
               onClick = {()=>this.handleClick(i)}
             />);
   }
 
   render() {
-    const status = 'Next player: ' + (this.state.isNext ? 'X':'O');
-
+    let status = 'Next player: ' + (this.state.isNext ? 'X':'O');
+    if(this.state.winner){
+      status = 'And the winner is: ' + this.state.winner
+    }
     return (
       <div>
         <div className="status">{status}</div>
@@ -82,3 +91,26 @@ ReactDOM.render(
   <Game />,
   document.getElementById('root')
 );
+
+
+function calculateWinner(squaries){
+  const lines = [
+    [0, 1, 2],
+    [0, 3, 6],
+    [0, 4, 8],
+    [1, 4, 7],
+    [2, 5, 8],
+    [3, 4, 5],
+    [6, 7, 8],
+    [2, 4, 6],
+  ]
+  let winner = null
+  lines.forEach(line => {
+    const [a, b, c] = line
+    // console.log('aa====', JSON.stringify(a));
+    if(squaries[a] && squaries[a]===squaries[b] && squaries[a]===squaries[c]){
+      winner = squaries[a]
+    } 
+  });
+  return winner
+}
