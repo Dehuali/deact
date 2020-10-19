@@ -4,7 +4,7 @@ import './index.css';
 
 function Square(props) {
     return (
-      <button className="square" onClick={()=> props.onClick()}>
+      <button className="square" onClick={props.onClick}>
         {props.value}
       </button>
     );
@@ -14,14 +14,17 @@ class Board extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      squaries : Array(9).fill(null)
+      squaries : Array(9).fill(null),
+      isNext: true,
     }
   }
 
   handleClick(i){
     let squaries = this.state.squaries.slice()
-    squaries[i] = 'X'
-    this.setState({squaries: squaries})
+    if(!squaries[i]){
+      squaries[i] = this.state.isNext ? 'X':'O'
+      this.setState({squaries: squaries, isNext: !this.state.isNext})
+    }
   }
 
   renderSquare(i ) {
@@ -32,7 +35,7 @@ class Board extends React.Component {
   }
 
   render() {
-    const status = 'Next player: X';
+    const status = 'Next player: ' + (this.state.isNext ? 'X':'O');
 
     return (
       <div>
