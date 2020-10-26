@@ -5,9 +5,7 @@ import './index.css';
 function Square(props) {
     return (
       <button className="square" onClick={props.onClick}>
-        {/* {props.value ? props.value : props.position} */}
         {props.value}
-        {/* {props.position} */}
       </button>
     );
   }
@@ -30,6 +28,8 @@ class Board extends React.Component {
     let winner = calculateWinner(squaries)
     if(winner){
       this.setState({winner: winner})
+    }else if(squaries.indexOf(null) < 0){
+      this.setState({tie: true})
     }
   }
 
@@ -43,6 +43,9 @@ class Board extends React.Component {
 
   render() {
     let status = 'Next player: ' + (this.state.isNext ? 'X':'O');
+    if(this.state.tie){
+      status = 'Oops, this is a Tie. Pleas start over.'
+    }
     if(this.state.winner){
       status = 'And the winner is: ' + this.state.winner
     }
