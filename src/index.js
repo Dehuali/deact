@@ -42,16 +42,16 @@ class Board extends React.Component {
   }
 
   render() {
-    let status = 'Next player: ' + (this.state.isNext ? 'X':'O');
+    let statusText = 'Next player: ' + (this.state.isNext ? 'X':'O');
     if(this.state.tie){
-      status = 'Oops, this is a Tie. Pleas start over.'
+      statusText = 'Oops, this is a Tie. Pleas start over.'
     }
     if(this.state.winner){
-      status = 'And the winner is: ' + this.state.winner
+      statusText = 'And the winner is: ' + this.state.winner
     }
     return (
       <div>
-        <div className="status">{status}</div>
+        <div className="status">{statusText}</div>
         <div className="board-row">
           {this.renderSquare(0)}
           {this.renderSquare(1)}
